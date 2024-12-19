@@ -5,9 +5,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :members do
-    delete :destroy, on: :member
-  end
+  resources :members
 
   resources :item_stocks, only: [:index, :create]
 

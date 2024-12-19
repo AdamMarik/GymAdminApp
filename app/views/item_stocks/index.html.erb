@@ -1,18 +1,6 @@
 <h2>Stock Management</h2>
 
-<%= form_with model: @item_stock, url: item_stocks_path, method: :post do |form| %>
-  <div class="form-group">
-    <%= form.label :item_name, "Item Name" %>
-    <%= form.text_field :item_name, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.label :quantity, "Quantity" %>
-    <%= form.number_field :quantity, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.submit "Add Item", class: "btn btn-primary" %>
-  </div>
-<% end %>
+<%= render 'form', item_stock: @item_stock %>
 
 <h3>Current Stock</h3>
 <table class="table">
@@ -25,7 +13,7 @@
   <tbody>
     <% @item_stocks.each do |item_stock| %>
       <tr>
-        <td><%= item_stock.item_name %></td>
+        <td><%= item_stock.name %></td>
         <td><%= item_stock.quantity %></td>
       </tr>
     <% end %>

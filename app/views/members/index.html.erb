@@ -20,7 +20,10 @@
          <td><%= member.active_account? ? 'Yes' : 'No' %></td>
         <td>
           <%= link_to 'Edit', edit_member_path(member), class: 'btn btn-warning' %>
-          <%= link_to 'Delete', member_path(member), method: :delete, class: 'btn btn-danger' %>
+
+          <%= form_with url: member_path(member), method: :delete, local: true, html: { class: "d-inline-block" } do |form| %>
+                  <%= form.submit 'Delete', class: "btn btn-danger" %>
+          <% end %>
 
         </td>
       </tr>

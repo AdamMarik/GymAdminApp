@@ -1,12 +1,27 @@
-<%= form_with model: @item_stock, local: true do |f| %>
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' %>
+<%= form_with model: @item_stock, url: item_stocks_path do |form| %>
+  <% if @item_stock.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item_stock.errors.count, "error") %> prohibited this item_stock from being saved:</h2>
+
+      <ul>
+        <% @item_stock.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
     </div>
-    <div class="form-group">
-      <%= f.label :quantity %>
-      <%= f.number_field :quantity, class: 'form-control' %>
-    </div>
-    <%= f.submit class: 'btn btn-primary' %>
   <% end %>
-  
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Add Item", class: "btn btn-primary" %>
+  </div>
+<% end %>

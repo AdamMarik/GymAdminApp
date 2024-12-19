@@ -1,6 +1,7 @@
 class MembersController < ApplicationController
   before_action :set_member, only: [:show, :edit, :update, :destroy]
 
+
   def index
     @members = Member.all
   end
@@ -35,9 +36,11 @@ class MembersController < ApplicationController
   end
 
   def destroy
+    Rails.logger.info "Deleting member with ID: #{@member.id}"
     @member.destroy
     redirect_to members_path, notice: 'Member was successfully destroyed.'
   end
+  
 
   private
 
