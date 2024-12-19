@@ -1,0 +1,29 @@
+<h1>Gym Members</h1>
+<%= link_to 'Add Member', new_member_path, class: 'btn btn-primary' %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Membership ID</th>
+      <th>Contact Info</th>
+      <th>Membership Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td><%= member.name %></td>
+        <td><%= member.membership_id %></td>
+        <td><%= member.contact_info %></td>
+        <td><%= member.membership_type %></td>
+         <td><%= member.active_account? ? 'Yes' : 'No' %></td>
+        <td>
+          <%= link_to 'Edit', edit_member_path(member), class: 'btn btn-warning' %>
+          <%= link_to 'Delete', member_path(member), method: :delete, class: 'btn btn-danger' %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

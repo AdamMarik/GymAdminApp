@@ -1,0 +1,63 @@
+<h1 class="text-center mb-4">Gym Check-Ins</h1>
+
+<!-- Check-In Form -->
+<div class="card shadow mb-4">
+  <div class="card-header bg-primary text-white">
+    <h4>Check In a Member</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with(model: @check_in, url: check_ins_path, local: true, html: { class: "row g-3" }) do |form| %>
+      <div class="col-md-8">
+        <%= form.label :member_id, 'Select Member:', class: "form-label" %>
+        <%= form.collection_select :member_id, @members, :id, :name, {}, { class: "form-select" } %>
+      </div>
+      <div class="col-md-4 d-flex align-items-end">
+        <%= form.submit 'Check In', class: "btn btn-success w-100" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Active Members Table -->
+<div class="card shadow">
+  <div class="card-header bg-secondary text-white">
+    <h4>Active Members</h4>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Member Name</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @members.each do |member| %>
+          <% check_in = CheckIn.find_by(member_id: member.id, checked_out: false) %>
+          <tr>
+            <td><%= member.name %></td>
+            <td>
+              <% if check_in %>
+                <span class="badge bg-success">Active</span>
+              <% elsif !member.active_account? %>
+                <span class="badge bg-danger">No Active Account</span>
+              <% else %>
+                <span class="badge bg-warning text-dark">Not Checked In</span>
+              <% end %>
+            </td>
+            <td>
+              <% if check_in %>
+                <%= form_with url: check_out_check_in_path(check_in), method: :patch, local: true, html: { class: "d-inline-block" } do |form| %>
+                  <%= form.submit 'Check Out', class: "btn btn-danger btn-sm" %>
+                <% end %>
+              <% else %>
+                <button class="btn btn-secondary btn-sm" disabled>Not Checked In</button>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
