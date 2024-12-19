@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['3.2', '3.3'] # Use at least 3.1 or higher
+        ruby-version: ['3.2', '3.3']
         rails-version: ['7.0', '7.1', '7.2']
     env:
       RAILS_ENV: test
@@ -23,6 +23,12 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+      - name: Install sqlite3
+        run: sudo apt-get update -qq && sudo apt-get install -y libsqlite3-dev
+      - name: Force rebuild sqlite3 gem
+        run: gem uninstall sqlite3 -v 1.7.3 -x && gem install sqlite3
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3 --system
       - name: Set up database
         run: |
           mkdir -p db
