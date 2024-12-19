@@ -1,0 +1,56 @@
+name: "Ruby on Rails CI"
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['3.2']
+        rails-version: ['7.2']
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "sqlite3:db/test.sqlite3" # SQLite
+    steps:
+      # ... checkout and ruby setup steps
+      - name: Set up database
+        run: |
+          mkdir -p db
+          touch db/test.sqlite3
+          bundle exec rails db:migrate
+      - name: Run tests
+        run: bundle exec rspec # Use rspec, change if you use minitest
+      - name: Analyze code quality
+        uses: simple-actions/quality-gate@v1 # Add this for quality analysis
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['3.2'] # Linting only needs to be done on one ruby version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install linters
+        run: |
+          gem install bundler-audit brakeman rubocop
+      - name: Security audit dependencies
+        run: bundle exec bundler-audit --update
+      - name: Security audit application code
+        run: bundle exec brakeman -q -w2
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel
