@@ -38,7 +38,7 @@ jobs:
           touch db/test.sqlite3
           bundle exec rails db:migrate
       - name: Run tests
-        run: bundle exec rspec # Or bundle exec rails test 
+        run: bundle exec rspec 
 
   lint:
     runs-on: ubuntu-latest
