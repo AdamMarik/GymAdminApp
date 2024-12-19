@@ -7,7 +7,7 @@
       <th>Membership ID</th>
       <th>Contact Info</th>
       <th>Membership Type</th>
-      <th>Actions</th>
+      <th>Active</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +17,7 @@
         <td><%= member.membership_id %></td>
         <td><%= member.contact_info %></td>
         <td><%= member.membership_type %></td>
-         <td><%= member.active_account? ? 'Yes' : 'No' %></td>
+        <td><%= member.active_account? ? 'Yes' : 'No' %></td>
         <td>
           <%= link_to 'Edit', edit_member_path(member), class: 'btn btn-warning' %>
 

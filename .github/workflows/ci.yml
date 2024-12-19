@@ -11,15 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:latest
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: gym_admin_test
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +18,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.5
+          ruby-version: 3.1 # Specify the Ruby version you're using
 
       - name: Install dependencies
         run: |
@@ -36,7 +27,6 @@ jobs:
 
       - name: Set up the database
         run: |
-          cp config/database.yml.ci config/database.yml
           bin/rails db:create RAILS_ENV=test
           bin/rails db:migrate RAILS_ENV=test
 

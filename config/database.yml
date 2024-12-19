@@ -11,6 +11,12 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+  test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
 production:
   adapter: postgresql
   encoding: unicode

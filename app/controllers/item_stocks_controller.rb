@@ -1,7 +1,7 @@
 class ItemStocksController < ApplicationController
   def index
     @item_stocks = ItemStock.all
-    @item_stock = ItemStock.new # Important: Initialize @item_stock for the form
+    @item_stock = ItemStock.new
   end
 
   def create
@@ -9,8 +9,27 @@ class ItemStocksController < ApplicationController
     if @item_stock.save
       redirect_to item_stocks_path, notice: 'Item stock was successfully created.'
     else
-      render :index # Render the index view, which includes the form
+      render :index
     end
+  end
+
+  def edit
+    @item_stock = ItemStock.find(params[:id]) # Find the item to edit
+  end
+
+  def update
+    @item_stock = ItemStock.find(params[:id])
+    if @item_stock.update(item_stock_params)
+      redirect_to item_stocks_path, notice: 'Item stock was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @item_stock = ItemStock.find(params[:id])
+    @item_stock.destroy
+    redirect_to item_stocks_path, notice: 'Item stock was successfully deleted.'
   end
 
   private

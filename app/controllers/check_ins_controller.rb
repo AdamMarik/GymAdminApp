@@ -3,13 +3,14 @@ class CheckInsController < ApplicationController
 
   def index
     @check_ins = CheckIn.all
-    @members = Member.all
+    @members = Member.all 
     @check_in = CheckIn.new
   end
 
   def create
     @check_in = CheckIn.new(check_in_params)
     if @check_in.save
+      activate_member_if_first_check_in(@member)
       redirect_to check_ins_path, notice: 'Member successfully checked in.'
     else
       @members = Member.all
@@ -27,6 +28,12 @@ class CheckInsController < ApplicationController
   end
 
   private
+
+  def activate_member_if_first_check_in(member)
+    unless member.active
+      member.update(active: true)
+    end
+  end
 
   def set_member
     @member = Member.find(params[:check_in][:member_id])

@@ -1,13 +1,33 @@
 <h2>Stock Management</h2>
 
-<%= render 'form', item_stock: @item_stock %>
+<!-- Form to Add New Item -->
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h4>Add New Item</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with(model: @item_stock, url: item_stocks_path, local: true) do |form| %>
+      <div class="mb-3">
+        <%= form.label :name, 'Item Name:', class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-control', required: true %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :quantity, 'Quantity:', class: 'form-label' %>
+        <%= form.number_field :quantity, class: 'form-control', required: true %>
+      </div>
+      <%= form.submit 'Add Item', class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</div>
 
+<!-- Current Stock Table -->
 <h3>Current Stock</h3>
 <table class="table">
   <thead>
     <tr>
       <th>Item Name</th>
       <th>Quantity</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +35,12 @@
       <tr>
         <td><%= item_stock.name %></td>
         <td><%= item_stock.quantity %></td>
+        <td>
+          <%= link_to 'Edit', edit_item_stock_path(item_stock), class: 'btn btn-warning btn-sm' %>
+          <%= form_with url: item_stock_path(item_stock), method: :delete, local: true, class: 'd-inline-block' do |form| %>
+            <%= form.submit 'Delete', class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
