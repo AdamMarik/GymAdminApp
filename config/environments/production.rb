@@ -39,7 +39,8 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  config.hosts << "ec2-54-211-231-216.compute-1.amazonaws.com"
+  config.hosts = ["ec2-54-211-231-216.compute-1.amazonaws.com", "localhost", "127.0.0.1"]
+
 
 
   # Mount Action Cable outside main process or domain.
