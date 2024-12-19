@@ -1,35 +1,58 @@
-name: CI Pipeline
-
+name: "Ruby on Rails CI"
 on:
   push:
-    branches:
-      - main
+    branches: [ "master" ]
   pull_request:
-    branches:
-      - main
-
+    branches: [ "master" ]
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        ruby-version: ['3.0', '3.1', '3.2', '3.3'] # Test against multiple Ruby versions
+        rails-version: ['7.0', '7.1', '7.2'] # Test against multiple Rails versions
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "sqlite3:db/test.sqlite3" # SQLite
+      BUNDLE_WITHOUT: development:production # Exclude development and production gems
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Ruby
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.5
-
-      - name: Install dependencies
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Set up database
         run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-
-      - name: Set up the database
-        run: |
-          bin/rails db:create RAILS_ENV=test
-          bin/rails db:migrate RAILS_ENV=test
-
+          mkdir -p db
+          touch db/test.sqlite3
+          bundle exec rails db:migrate
       - name: Run tests
+        run: bundle exec rspec # Or bundle exec rails test if using Minitest
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['3.2'] # Linting only needs to be done on one ruby version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install linters
         run: |
-          bin/rspec
+          gem install bundler-audit brakeman rubocop
+      - name: Security audit dependencies
+        run: bundle exec bundler-audit --update
+      - name: Security audit application code
+        run: bundle exec brakeman -q -w2
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel --fail-level=warning # Fail on warnings
