@@ -1,9 +1,9 @@
 class CheckInsController < ApplicationController
-  before_action :set_member, only: [:create]
+  before_action :set_member, only: [ :create ]
 
   def index
     @check_ins = CheckIn.all
-    @members = Member.all 
+    @members = Member.all
     @check_in = CheckIn.new
   end
 
@@ -11,7 +11,7 @@ class CheckInsController < ApplicationController
     @check_in = CheckIn.new(check_in_params)
     if @check_in.save
       activate_member_if_first_check_in(@member)
-      redirect_to check_ins_path, notice: 'Member successfully checked in.'
+      redirect_to check_ins_path, notice: "Member successfully checked in."
     else
       @members = Member.all
       render :index
@@ -21,9 +21,9 @@ class CheckInsController < ApplicationController
   def check_out
     @check_in = CheckIn.find(params[:id])
     if @check_in.update(check_out_time: Time.current, checked_out: true)
-      redirect_to check_ins_path, notice: 'Member successfully checked out.'
+      redirect_to check_ins_path, notice: "Member successfully checked out."
     else
-      redirect_to check_ins_path, alert: 'Error during check-out.'
+      redirect_to check_ins_path, alert: "Error during check-out."
     end
   end
 

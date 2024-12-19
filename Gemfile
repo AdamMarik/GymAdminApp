@@ -11,17 +11,17 @@ gem "puma", ">= 5.0"
 
 gem "sqlite3", "~> 1.4"
 
-gem 'rspec-rails', group: [:development, :test]
+gem "rspec-rails", group: [ :development, :test ]
 
-gem 'sassc-rails'
+gem "sassc-rails"
 
-gem 'font-awesome-sass'
+gem "font-awesome-sass"
 
-gem 'bootstrap'
+gem "bootstrap"
 
-gem 'webpacker'
+gem "webpacker"
 
-gem 'bundler-audit'
+gem "bundler-audit"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"

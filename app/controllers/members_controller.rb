@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  before_action :set_member, only: [:show, :edit, :update, :destroy]
+  before_action :set_member, only: [ :show, :edit, :update, :destroy ]
 
 
   def index
@@ -8,7 +8,7 @@ class MembersController < ApplicationController
 
   def show
     # Perform any necessary actions here
-    redirect_to members_path, notice: 'Member details displayed'
+    redirect_to members_path, notice: "Member details displayed"
   end
 
   def new
@@ -18,7 +18,7 @@ class MembersController < ApplicationController
   def create
     @member = Member.new(member_params)
     if @member.save
-      redirect_to @member, notice: 'Member was successfully created.'
+      redirect_to @member, notice: "Member was successfully created."
     else
       render :new
     end
@@ -29,7 +29,7 @@ class MembersController < ApplicationController
 
   def update
     if @member.update(member_params)
-      redirect_to @member, notice: 'Member was successfully updated.'
+      redirect_to @member, notice: "Member was successfully updated."
     else
       render :edit
     end
@@ -38,9 +38,9 @@ class MembersController < ApplicationController
   def destroy
     Rails.logger.info "Deleting member with ID: #{@member.id}"
     @member.destroy
-    redirect_to members_path, notice: 'Member was successfully destroyed.'
+    redirect_to members_path, notice: "Member was successfully destroyed."
   end
-  
+
 
   private
 

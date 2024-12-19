@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   resources :members
 
-  resources :item_stocks, only: [:index, :create, :edit, :update, :destroy]
+  resources :item_stocks, only: [ :index, :create, :edit, :update, :destroy ]
 
 
-  root 'members#index'
+  root "members#index"
 end

@@ -7,7 +7,7 @@ class ItemStocksController < ApplicationController
   def create
     @item_stock = ItemStock.new(item_stock_params)
     if @item_stock.save
-      redirect_to item_stocks_path, notice: 'Item stock was successfully created.'
+      redirect_to item_stocks_path, notice: "Item stock was successfully created."
     else
       render :index
     end
@@ -20,7 +20,7 @@ class ItemStocksController < ApplicationController
   def update
     @item_stock = ItemStock.find(params[:id])
     if @item_stock.update(item_stock_params)
-      redirect_to item_stocks_path, notice: 'Item stock was successfully updated.'
+      redirect_to item_stocks_path, notice: "Item stock was successfully updated."
     else
       render :edit
     end
@@ -29,7 +29,7 @@ class ItemStocksController < ApplicationController
   def destroy
     @item_stock = ItemStock.find(params[:id])
     @item_stock.destroy
-    redirect_to item_stocks_path, notice: 'Item stock was successfully deleted.'
+    redirect_to item_stocks_path, notice: "Item stock was successfully deleted."
   end
 
   private

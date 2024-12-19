@@ -8,4 +8,3 @@ class FixMembersTable < ActiveRecord::Migration[7.2]
     change_column_default :members, :checked_in, false
   end
 end
-

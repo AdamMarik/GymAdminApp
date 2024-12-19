@@ -11,4 +11,4 @@ Rails.application.config.assets.version = "1.0"
 # folder are already added.
 # Rails.application.config.assets.precompile += %w[ admin.js admin.css ]
 # config/initializers/assets.rb
-Rails.application.config.assets.paths << Rails.root.join('app', 'javascript')
+Rails.application.config.assets.paths << Rails.root.join("app", "javascript")
